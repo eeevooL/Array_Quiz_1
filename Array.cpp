@@ -24,8 +24,10 @@ bool Array::Add(int value) {
 
 // Insert value at specified index, shifting elements to the right
 bool Array::InsertAt(int index, int value) {
-    if(isValid(index, true)) return false;
-    shiftElements(index, true);
+    if(index < 0 || index > size_ || size_ >= capacity_) return false;
+    for(int i = size_; i > index; i--){
+        data_[i] = data_[i - 1];
+    }
     data_[index] = value;
     size_++;
     return true;
@@ -33,15 +35,17 @@ bool Array::InsertAt(int index, int value) {
 
 // Delete element at index, shifting elements left
 bool Array::DeleteAt(int index) {
-    if(isValid(index, false)) return false;
-    shiftElements(index, false);
+    if(index < 0 || index  >= size_) return false;
+    for(int i = index; i < size_ - 1; i++){
+        data_[i] = data_[i + 1];
+    }
     size_--;
     return true;
 }
 
 // Update element at index
 bool Array::UpdateAt(int index, int new_value) {
-    if(isValid(index, false)) return false;
+    if(index < 0 || index  >= size_) return false;
     data_[index] = new_value;
     return true;
 }
@@ -76,24 +80,4 @@ int Array::GetAt(int index) const {
         throw std::out_of_range("Index out of range");
     }
     return data_[index];
-}
-
-void Array::shiftElements(int index, bool toRight){
-    if(toRight){
-            for(int i = size_; i > index; i--){
-            data_[i] = data_[i - 1];
-        }
-    } else{
-            for(int i = index; i < size_ - 1; i++){
-                data_[i] = data_[i + 1];
-        }
-    }
-}
-
-bool Array::isValid(int index, bool toInsert){
-    if(toInsert){
-        return index < 0 || index > size_ || size_ >= capacity_;
-    } else{
-        return index < 0 || index >= size_;
-    }
 }
