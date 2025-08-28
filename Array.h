@@ -15,6 +15,8 @@ public:
     int Size() const;
     int Capacity() const;
     int GetAt(int index) const;
+    void shiftElements(int index, bool toRight);
+    bool isValid(int index, bool toInsert);
 
 private:
     int* data_;
